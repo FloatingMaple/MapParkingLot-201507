@@ -1,5 +1,7 @@
 package com.example.baidumapdemo;
 
+import java.util.List;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -12,14 +14,18 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.navisdk.ui.routeguide.subview.r;
 import com.example.baidumapdemo.MyOrientationListener.OnOrientationListener;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,6 +50,11 @@ private BitmapDescriptor mIconLocation;
 private MyOrientationListener myOrientationListener;
 private float mCurrentX;
 
+private com.baidu.mapapi.map.MyLocationConfiguration.LocationMode mLocationMode;
+
+
+//覆盖物相关
+private BitmapDescriptor mMarker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +69,20 @@ private float mCurrentX;
 		mBaiduMap.setMapStatus(msu);
 		//初始化定位
 		initLocation();
+		
+		initMarker();
 	}
 	
+	private void initMarker() {
+		// TODO Auto-generated method stub
+		mMarker = BitmapDescriptorFactory
+				.fromResource(R.drawable.maker);
+		
+	}
+
 	private void initLocation() {
+		
+		mLocationMode = com.baidu.mapapi.map.MyLocationConfiguration.LocationMode.NORMAL;
 		mLocationClient = new LocationClient(this);
 		mLocationListener = new MyLocationListener();
 		mLocationClient.registerLocationListener(mLocationListener);
@@ -155,10 +177,42 @@ private float mCurrentX;
 		case R.id.id_map_location:
 			centerToMylocation();
 			break;
+		case R.id.id_map_mode_common:
+			mLocationMode = com.baidu.mapapi.map.MyLocationConfiguration.LocationMode.NORMAL;
+			break;
+		case R.id.id_map_mode_following:
+			mLocationMode = com.baidu.mapapi.map.MyLocationConfiguration.LocationMode.FOLLOWING;
+			break;
+		case R.id.id_map_mode_compass:
+			mLocationMode = com.baidu.mapapi.map.MyLocationConfiguration.LocationMode.COMPASS;
+			break;
+		case R.id.id_map_add_overlay:
+			addOverlays(Info.infos);
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void addOverlays(List<Info> infos) {
+		// 添加覆盖物
+		mBaiduMap.clear();
+		LatLng latLng = null;
+		Marker marker = null;
+		OverlayOptions options;
+		for (Info info:infos) {
+			//经纬度
+			latLng = new LatLng(info.getLatitude(),info.getLongitude());
+			//图标
+			options = new MarkerOptions().position(latLng).icon(mMarker).zIndex(5);
+			marker = (Marker) mBaiduMap.addOverlay(options);
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("info", info);
+			marker.setExtraInfo(bundle);
+		}
+		
+		MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
+		mBaiduMap.setMapStatus(msu);
 	}
 
 	/**
@@ -182,8 +236,7 @@ private float mCurrentX;
 			mBaiduMap.setMyLocationData(data);
 			//设置自定义图标
 			MyLocationConfiguration config = new 
-					MyLocationConfiguration(com.baidu.mapapi.map.MyLocationConfiguration
-							.LocationMode.NORMAL, true, mIconLocation);
+					MyLocationConfiguration(mLocationMode, true, mIconLocation);
 			mBaiduMap.setMyLocationConfigeration(config);
 			//更新经纬度			
 			mLatitude = location.getLatitude();
