@@ -9,8 +9,11 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BaiduMap.OnMapClickListener;
+import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -30,6 +33,10 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -55,6 +62,7 @@ private com.baidu.mapapi.map.MyLocationConfiguration.LocationMode mLocationMode;
 
 //覆盖物相关
 private BitmapDescriptor mMarker;
+private RelativeLayout mMarkerLy;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +79,49 @@ private BitmapDescriptor mMarker;
 		initLocation();
 		
 		initMarker();
+		
+		mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+			
+			@Override
+			public boolean onMarkerClick(Marker marker) {
+				Bundle extraInfo = marker.getExtraInfo();
+				Info info = (Info) extraInfo.getSerializable("info");
+				ImageView iv = (ImageView) mMarkerLy.findViewById(R.id.id_info_img);
+				TextView distance = (TextView) mMarkerLy.findViewById(R.id.id_info_distance);
+				TextView name = (TextView) mMarkerLy.findViewById(R.id.id_info_name);
+				TextView zan = (TextView) mMarkerLy.findViewById(R.id.id_info_zan);
+				
+				iv.setImageResource(info.getImgId());
+				distance.setText(info.getDistance());
+				name.setText(info.getName());
+				zan.setText(info.getZan() + "");
+				
+				mMarkerLy.setVisibility(View.VISIBLE);
+				return true;
+			}
+		});
+		
+		mBaiduMap.setOnMapClickListener(new OnMapClickListener() {
+			
+			@Override
+			public boolean onMapPoiClick(MapPoi arg0) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public void onMapClick(LatLng arg0) {
+				// TODO Auto-generated method stub
+				mMarkerLy.setVisibility(View.GONE);
+			}
+		});
 	}
 	
 	private void initMarker() {
 		// TODO Auto-generated method stub
 		mMarker = BitmapDescriptorFactory
 				.fromResource(R.drawable.maker);
-		
+		mMarkerLy = (RelativeLayout) findViewById(R.id.id_maker_ly);
 	}
 
 	private void initLocation() {
