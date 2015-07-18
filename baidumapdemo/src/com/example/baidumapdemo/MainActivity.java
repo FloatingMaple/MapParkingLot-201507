@@ -13,6 +13,7 @@ import com.baidu.mapapi.map.BaiduMap.OnMapClickListener;
 import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -29,6 +30,8 @@ import com.example.baidumapdemo.MyOrientationListener.OnOrientationListener;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
@@ -96,6 +99,32 @@ private RelativeLayout mMarkerLy;
 				name.setText(info.getName());
 				zan.setText(info.getZan() + "");
 				
+				//初始化一个infowindow
+				InfoWindow infoWindow;
+				TextView tv = new TextView(context);
+				tv.setBackgroundResource(R.drawable.location_tips);
+				tv.setPadding(30, 20, 30, 50);
+				tv.setText(info.getName());
+				tv.setTextColor(Color.parseColor("#ffffff"));
+				
+				final LatLng latLng = marker.getPosition();
+				Point p = mBaiduMap.getProjection().toScreenLocation(latLng);
+				p.y -= 47;
+				LatLng ll = mBaiduMap.getProjection().fromScreenLocation(p);
+				
+				//地图SDK发生更改，第一个参数要使用bitmap
+				BitmapDescriptor tvBD = BitmapDescriptorFactory.fromView(tv);
+				infoWindow = new InfoWindow(tvBD, ll, 0,new InfoWindow.OnInfoWindowClickListener() {
+					
+					@Override
+					public void onInfoWindowClick() {
+						// TODO Auto-generated method stub
+						mBaiduMap.hideInfoWindow();
+					}
+				});
+				
+				mBaiduMap.showInfoWindow(infoWindow);
+				
 				mMarkerLy.setVisibility(View.VISIBLE);
 				return true;
 			}
@@ -113,6 +142,7 @@ private RelativeLayout mMarkerLy;
 			public void onMapClick(LatLng arg0) {
 				// TODO Auto-generated method stub
 				mMarkerLy.setVisibility(View.GONE);
+				mBaiduMap.hideInfoWindow();
 			}
 		});
 	}
