@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 private MapView mMapView;
 private BaiduMap baiduMap;
 
-//¶¨Î»Ïà¹Ø
+//å®šä½ç›¸å…³
 private LocationClient mLocationClient;
 private MyLocationListener mLocationListener;
 private boolean isFirstIn = true;
@@ -39,7 +39,7 @@ private Context context;
 		this.context = this;
 		initview();
 		
-		//³õÊ¼»¯¶¨Î»
+		//å®ç°å®šä½
 		initlocation();
 	}
 
@@ -47,9 +47,9 @@ private Context context;
 	private void initview() {
 		mMapView = (MapView) findViewById(R.id.bmapview);
 		baiduMap = mMapView.getMap();
-		//ÆÕÍ¨Ä£Ê½µØÍ¼
+		//æ™®é€šæ¨¡å¼åœ°å›¾
 		baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-		//ÉèÖÃ³õÊ¼µÄ±ÈÀı³ßÔ¼Îª500m
+		//è®¾ç½®é»˜è®¤æ¯”ä¾‹å°º500m
 		MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(15.0f);
 		baiduMap.setMapStatus(msu);
 	}
@@ -60,18 +60,10 @@ private Context context;
 		mLocationClient.registerLocationListener(mLocationListener);
 		
 		LocationClientOption option = new LocationClientOption();
-		option.setCoorType("bd09ll");	//×ø±êÀàĞÍ
-		option.setIsNeedAddress(true);	//ÉèÖÃĞèÒªµØÖ·
-		option.setOpenGps(true);		//Ê¹ÓÃGPS
-		option.setScanSpan(1000);		//¶¨Î»ÇëÇó¼ä¸ô
-	
-		/*  ¹ØÓÚ¶¨Î»Ä£Ê½Óë¾«¶È:
-		option.setLocationMode(LocationMode.Hight_Accuracy);
-		Ä¬ÈÏ¸ß¾«¶È
-		Hight_Accuracy ¸ß¾«¶È¶¨Î»Ä£Ê½£ºÕâÖÖ¶¨Î»Ä£Ê½ÏÂ£¬»áÍ¬Ê±Ê¹ÓÃÍøÂç¶¨Î»ºÍGPS¶¨Î»£¬ÓÅÏÈ·µ»Ø×î¸ß¾«¶ÈµÄ¶¨Î»½á¹û£»
-		Battery_Saving µÍ¹¦ºÄ¶¨Î»Ä£Ê½£ºÕâÖÖ¶¨Î»Ä£Ê½ÏÂ£¬²»»áÊ¹ÓÃGPS£¬Ö»»áÊ¹ÓÃÍøÂç¶¨Î»£¨Wi-FiºÍ»ùÕ¾¶¨Î»£©£»
-		Device_Sensors ½öÓÃÉè±¸¶¨Î»Ä£Ê½£ºÕâÖÖ¶¨Î»Ä£Ê½ÏÂ£¬²»ĞèÒªÁ¬½ÓÍøÂç£¬Ö»Ê¹ÓÃGPS½øĞĞ¶¨Î»£¬ÕâÖÖÄ£Ê½ÏÂ²»Ö§³ÖÊÒÄÚ»·¾³µÄ¶¨Î»¡£
-		*/
+		option.setCoorType("bd09ll");	//bd09llç±»å‹åæ ‡
+		option.setIsNeedAddress(true);	//è·å–åœ°å€
+		option.setOpenGps(true);		//å¼€å¯GPS
+		option.setScanSpan(1000);		//é—´éš”1s
 		mLocationClient.setLocOption(option);
 	}
 
@@ -86,7 +78,7 @@ private Context context;
 					.build();
 			baiduMap.setMyLocationData(data);
 			
-			//Èç¹ûÊÇµÚÒ»´ÎÊ¹ÓÃ£¬½øĞĞ¶¨Î»
+			//ç¬¬ä¸€æ¬¡è¿›å…¥
 			if (isFirstIn) {
 				LatLng latLng = new LatLng(location.getLatitude(), 
 						location.getLongitude());
