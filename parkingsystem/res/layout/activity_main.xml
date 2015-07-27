@@ -1,12 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.parkingsystem.MainActivity" >
+    android:layout_height="match_parent" 
+     >
 
 <com.baidu.mapapi.map.MapView
     android:id="@+id/bmapview"
@@ -15,4 +11,22 @@
     android:clickable="true"
     />
 
+	<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginBottom="5dp"
+	    android:layout_marginLeft="50dp"
+	    android:layout_alignParentBottom="true"
+	    >
+	    
+	    <ImageButton
+	        android:id="@+id/ib_mylocation"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/icon_my_location"
+	        android:onClick="mylocation_click"
+	        />
+	    
+	</RelativeLayout>
+    
 </RelativeLayout>

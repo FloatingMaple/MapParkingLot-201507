@@ -1,15 +1,19 @@
 package com.example.parkingsystem;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.LocationClientOption.LocationMode;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 
@@ -18,6 +22,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -30,6 +35,11 @@ private LocationClient mLocationClient;
 private MyLocationListener mLocationListener;
 private boolean isFirstIn = true;
 private Context context;
+private double mLatitude;
+private double mLongitude;
+
+//自定义位置图标
+private BitmapDescriptor mIconLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +47,13 @@ private Context context;
 		SDKInitializer.initialize(getApplicationContext());
 		setContentView(R.layout.activity_main);
 		this.context = this;
+		
 		initview();
 		
 		//实现定位
 		initlocation();
 	}
-
-
+	
 	private void initview() {
 		mMapView = (MapView) findViewById(R.id.bmapview);
 		baiduMap = mMapView.getMap();
@@ -65,6 +75,15 @@ private Context context;
 		option.setOpenGps(true);		//开启GPS
 		option.setScanSpan(1000);		//间隔1s
 		mLocationClient.setLocOption(option);
+		
+		//初始化图标
+		mIconLocation = BitmapDescriptorFactory
+				.fromResource(R.drawable.navi_map_gps_locked);
+			
+	}
+	
+	public void mylocation_click(View view){
+		local_to_mLocation();
 	}
 
 	private class MyLocationListener implements BDLocationListener{
@@ -78,6 +97,15 @@ private Context context;
 					.build();
 			baiduMap.setMyLocationData(data);
 			
+			//设置自定义图标
+			MyLocationConfiguration configuration = new MyLocationConfiguration(
+					com.baidu.mapapi.map.MyLocationConfiguration.LocationMode.NORMAL, true, mIconLocation);
+			baiduMap.setMyLocationConfigeration(configuration); 
+			
+			//更新经纬度
+			mLatitude = location.getLatitude();
+			mLongitude = location.getLongitude();
+			
 			//第一次进入
 			if (isFirstIn) {
 				LatLng latLng = new LatLng(location.getLatitude(), 
@@ -89,6 +117,14 @@ private Context context;
 				Toast.makeText(context, location.getAddrStr(),Toast.LENGTH_SHORT).show();
 			}
 		}	
+	}
+	
+	
+	//定位到我的位置
+	private void local_to_mLocation(){
+		LatLng latLng = new LatLng(mLatitude, mLongitude);
+		MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
+		baiduMap.animateMapStatus(msu);
 	}
 	
 	@Override
