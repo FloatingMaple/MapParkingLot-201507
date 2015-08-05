@@ -28,5 +28,22 @@
 	        />
 	    
 	</RelativeLayout>
+	
+	<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginTop="50dp"
+	    >
+	    
+	    <Button
+	        android:id="@+id/bt_show_overlay"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="show"
+	        android:onClick="show_overlays"
+	        />
+	    
+	</RelativeLayout>
     
 </RelativeLayout>
