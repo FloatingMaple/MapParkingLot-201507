@@ -5,6 +5,7 @@ package com.example.parkingsystem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -42,6 +43,9 @@ public class JSON {
 			//字符数组转化成字符串
 			String json = new String(data);
 			
+			Log.i("json", "json:"+json);
+			
+//			JacksonGetData.main(json);
 			
 			JSONObject jsonObject = new JSONObject(json);
 			int total = jsonObject.getInt("total");
@@ -56,6 +60,8 @@ public class JSON {
 			//获取数组数据
 			JSONArray jsonArray = jsonObject.getJSONArray("contents");
 			for(int i = 0;i<jsonArray.length();i++){
+				Log.i("json", "第"+i+"次循环读contents");
+				
 				//得到数据
 				JSONObject item = jsonArray.getJSONObject(i);
 				String title = item.optString("title");
@@ -65,7 +71,23 @@ public class JSON {
 				String address = item.optString("address");
 				JSONArray location = item.optJSONArray("location");
 				
-				//存放到map中
+				Log.i("json", "location:"+location.toString());
+				Log.i("json", "location.length:"+location.length());
+				
+				String[] loc = {"",""};
+				
+				for(int j=0;j<location.length();j++){
+//					loc[j] = location.optJSONObject(j).toString();
+					loc[j] = location.optString(j);
+				}
+				
+				Log.i("json", "loc.length:"+loc.length);
+				for(int num=0;num<loc.length;num++){
+					Log.i("json", "loc["+num+"]:"+loc[num]);
+				}
+				
+				
+				//存放到map中				
 				map = new HashMap<String,String>();
 				map.put("title", title);				
 				map.put("distance", Float.toString(distance));					
@@ -73,6 +95,8 @@ public class JSON {
 				map.put("tag", tag);
 				map.put("address", address);
 				map.put("location", location.toString());
+				map.put("latitude", loc[0]);
+				map.put("longitude", loc[1]);
 				list.add(map);
 			}
 		}
@@ -85,9 +109,12 @@ public class JSON {
 			String tag = list2.get("tag");
 			String address = list2.get("address");
 			String location = list2.get("location");
+			String latitude = list2.get("latitude");
+			String longitude = list2.get("longitude");
 			
-			Log.i("abc", "title:" + title + " | distance:" + distance + " | price:"
-					+ price + " | tag:" + tag + " | location:" + location + " | address:" + address); 
+			Log.i("abc", "JSON 中的测试数据  :  title:" + title + " | distance:" + distance + " | price:"
+					+ price + " | tag:" + tag + " | location:" + location + " | address:"
+					+ address + " | latitude:" + latitude + " | longitude:" + longitude); 
 		}
 		
 		

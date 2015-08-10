@@ -1,5 +1,10 @@
 package com.example.parkingsystem;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.security.auth.PrivateCredentialPermission;
 
 import com.baidu.location.BDLocation;
@@ -17,8 +22,10 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 
@@ -106,6 +113,7 @@ private BitmapDescriptor mIconLocation;
 
 	public void show_overlays(View view){
 		
+		//获取数据的链接地址
 		PATH1 = PATH + 
 				"ak=" + AK + 
 				"&geotable_id=" + GEOTABLE_ID +
@@ -113,10 +121,10 @@ private BitmapDescriptor mIconLocation;
 				"&mcode=" + MCODE +
 				"&radius=" + "5000"		//搜索半径5000m
 				;
-
+		//测试连接地址
 		Log.i("abc", PATH1);
 		
-//		Looper.prepare();
+		//读取数据
 		new Thread(){
 			public void run() {
 				try {
@@ -124,15 +132,35 @@ private BitmapDescriptor mIconLocation;
 				} catch (Exception e) {
 					Log.i("abc", "数据存在异常");
 					e.printStackTrace();
-//					Toast.makeText(context, "数据存在异常", Toast.LENGTH_SHORT).show()
 				}				
 			};
 		}.start();
-//		Looper.loop();
+
+		new Thread(){
+			public void run() {
+				List<Map<String, String>> list = new ArrayList<Map<String,String>>();
+				Log.i("abc", "test2");			
+				try {
+					list = JSON.getJSONObject(PATH1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Log.i("abc", "list.size:"+list.size());				
+			};
+		}.start();
+		
+		Log.i("abc", "test3");			
+		
+		//以覆盖物的形式显示
+		baiduMap.clear();
+		LatLng latLng = null;
+		Marker marker = null;
+		OverlayOptions options;
+		
+
 		
 	}
 	
-
 	
 //	public void onGetSearchResult(CloudSearchResult result,int type,int iError) {
 //		if(result != null && result.poiList != null 
