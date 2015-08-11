@@ -1,5 +1,7 @@
 package com.example.parkingsystem;
 
+import java.io.Serializable;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -33,7 +36,9 @@ import android.R.string;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +49,7 @@ public class MainActivity extends Activity {
 
 private MapView mMapView;
 private BaiduMap baiduMap;
-
+private Handler handler;
 
 private LocationClient mLocationClient;
 private MyLocationListener mLocationListener;
@@ -52,6 +57,8 @@ private boolean isFirstIn = true;
 private Context context;
 private double mLatitude;
 private double mLongitude;
+
+private BitmapDescriptor mMarker;
 
 private static String PATH = "http://api.map.baidu.com/geosearch/v3/nearby?";
 private static String AK = "hTOEZILzGv4YmsrlZek5AZkA";
@@ -124,25 +131,74 @@ private BitmapDescriptor mIconLocation;
 		//测试连接地址
 		Log.i("abc", PATH1);
 		
-		//读取数据
-		new Thread(){
-			public void run() {
-				try {
-					JSON.getJSONObject(PATH1);
-				} catch (Exception e) {
-					Log.i("abc", "数据存在异常");
-					e.printStackTrace();
-				}				
-			};
-		}.start();
+		handler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				
+				Log.i("handler", "receive msg,read msg. msg:"+msg);
+				
+				//以覆盖物的形式显示
+				baiduMap.clear();
+				
+				mMarker = BitmapDescriptorFactory.fromResource(R.drawable.maker);
+				LatLng latLng = null;
+				Marker marker = null;
+				
+				List<Map<String, String>> list1 = 
+						(List<Map<String, String>>) msg.obj;
+				
+				Log.i("list1", "list1.length:" + list1.size());
+				
+				OverlayOptions options;
+				for(Map<String, String> list2 : list1){
+					String title = list2.get("title");
+					String distance = list2.get("distance");
+					String price = list2.get("price");
+					String tag = list2.get("tag");
+					String address = list2.get("address");
+					String location = list2.get("location");
+					String latitude = list2.get("latitude");
+					String longitude = list2.get("longitude");
+					
+					Log.i("list", "LIST2 中的测试数据  :  title:" + title + " | distance:" + distance + " | price:"
+							+ price + " | tag:" + tag + " | location:" + location + " | address:"
+							+ address + " | latitude:" + latitude + " | longitude:" + longitude); 
+					
+					latLng = new LatLng(Double.valueOf(longitude),Double.valueOf(latitude));
+					Log.i("list", "latitude:"+Double.valueOf(latitude)+"longitude"+Double.valueOf(longitude));
+					options = new MarkerOptions().position(latLng).icon(mMarker).zIndex(5);
+					marker = (Marker) baiduMap.addOverlay(options);
+//					Bundle arg0 = new Bundle();
+//					arg0.putSerializable("list", (Serializable) list2);
+//					marker.setExtraInfo(arg0);
+					Log.i("list", "overlay finish");
+				}
+				
+				MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
+				baiduMap.setMapStatus(msu);
+			}
+		};
+		
+		
 
+		//读取数据
 		new Thread(){
 			public void run() {
 				List<Map<String, String>> list = new ArrayList<Map<String,String>>();
 				Log.i("abc", "test2");			
 				try {
 					list = JSON.getJSONObject(PATH1);
+					Log.i("json", "json finish. list:"+list);
+					
+					Message message = Message.obtain();
+					message.obj = list;
+					handler.sendMessage(message);
+					
+					Log.i("handler", "send a message to main thread");
+					
 				} catch (Exception e) {
+					Log.i("abc", "数据存在异常");
 					e.printStackTrace();
 				}
 				Log.i("abc", "list.size:"+list.size());				
@@ -151,29 +207,9 @@ private BitmapDescriptor mIconLocation;
 		
 		Log.i("abc", "test3");			
 		
-		//以覆盖物的形式显示
-		baiduMap.clear();
-		LatLng latLng = null;
-		Marker marker = null;
-		OverlayOptions options;
-		
 
 		
 	}
-	
-	
-//	public void onGetSearchResult(CloudSearchResult result,int type,int iError) {
-//		if(result != null && result.poiList != null 
-//				&& result.poiList.size()>0 ){
-//			LocalSearchInfo info = new LocalSearchInfo();
-//			info.ak = "hTOEZILzGv4YmsrlZek5AZkA";
-//			info.geoTableId = 114798;
-//			info.tags = "";		//查询标签
-//			info.q = "";		//q 检索关键字
-//			info.region = "";	//检索区域的名称  e.g.市/区 默认全国范围
-//			CloudManager.getInstance().localSearch(info);
-//		}
-//	}
 	
 	private class MyLocationListener implements BDLocationListener{
 
@@ -269,8 +305,16 @@ private BitmapDescriptor mIconLocation;
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch(id){
+		case R.id.id_map_traffic:
+			if (baiduMap.isTrafficEnabled()) {
+				baiduMap.setTrafficEnabled(false);
+				item.setTitle("实时交通(off)");
+			}else {
+				baiduMap.setTrafficEnabled(true);
+				item.setTitle("实时交通(on)");
+			}
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
