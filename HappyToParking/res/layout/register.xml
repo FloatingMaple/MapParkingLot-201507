@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_login"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/regeist_div"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dip"
+        android:background="@drawable/background_login_div_bg"
+        android:orientation="vertical"
+        android:padding="15dip" >
+
+        <!-- 账号 -->
+
+        <TextView
+            style="@style/normalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:text="@string/login_label_username" />
+
+        <EditText
+            android:id="@+id/et_reg_username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_username_hint"
+            android:inputType="text"
+            android:singleLine="true" />
+        <!-- 密码 text -->
+
+        <TextView
+            style="@style/normalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/login_label_password" />
+
+        <EditText
+            android:id="@+id/et_reg_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:password="true"
+            android:singleLine="true" />
+
+        <TextView
+            style="@style/normalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="确认密码" />
+
+        <EditText
+            android:id="@+id/et_reg_password_again"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:password="true"
+            android:singleLine="true" />
+        <!-- 登录button -->
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/iv_login_blue_button"
+            android:text="注册" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/iv_login_cat" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/miniTwitter_logo"
+            android:layout_toLeftOf="@id/miniTwitter_logo"
+            android:paddingBottom="8dp"
+            android:src="@drawable/iv_login_logo" />
+    </RelativeLayout>
+
+</LinearLayout>

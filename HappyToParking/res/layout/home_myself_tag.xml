@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/title_ry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+
+        <RelativeLayout
+            android:id="@+id/titile_layout_ry"
+            android:layout_width="fill_parent"
+            android:layout_height="43dip"
+            android:background="@drawable/top_bar_bg" >
+
+            <ImageView
+                android:id="@+id/title_logo_img"
+                android:layout_width="99dip"
+                android:layout_height="34dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dip"
+                android:background="@drawable/top_bar_logo" />
+
+            <ImageButton
+                android:id="@+id/title_set_bn"
+                android:layout_width="59dip"
+                android:layout_height="25dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dip"
+                android:background="@drawable/set_bn_style" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <com.nd.ql.assist_class.MyScrollView
+        android:id="@+id/viewflipper_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_ry"
+        android:focusable="false"
+        android:scrollbars="none" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ViewFlipper
+                android:id="@+id/mViewFliper_vf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="160dip"
+                        android:background="@drawable/default_pic_1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="160dip"
+                        android:background="@drawable/default_pic_2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="160dip"
+                        android:background="@drawable/default_pic_3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="160dip"
+                        android:background="@drawable/default_pic_4" />
+                </LinearLayout>
+            </ViewFlipper>
+
+            <LinearLayout
+                android:id="@+id/home_date_ratio_ly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mViewFliper_vf" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dip"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/home_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dip"
+                        android:textColor="@android:color/black"
+                        android:textSize="12dip" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dip"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:id="@+id/home_ratio_img_01"
+                            android:layout_width="9dip"
+                            android:layout_height="9dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dip"
+                            android:background="@drawable/ratio_img_style" />
+
+                        <ImageView
+                            android:id="@+id/home_ratio_img_02"
+                            android:layout_width="9dip"
+                            android:layout_height="9dip"
+                            android:layout_marginRight="5dip"
+                            android:layout_toLeftOf="@id/home_ratio_img_01"
+                            android:background="@drawable/ratio_img_style" />
+
+                        <ImageView
+                            android:id="@+id/home_ratio_img_03"
+                            android:layout_width="9dip"
+                            android:layout_height="9dip"
+                            android:layout_marginRight="5dip"
+                            android:layout_toLeftOf="@id/home_ratio_img_02"
+                            android:background="@drawable/ratio_img_style" />
+
+                        <ImageView
+                            android:id="@+id/home_ratio_img_04"
+                            android:layout_width="9dip"
+                            android:layout_height="9dip"
+                            android:layout_marginRight="5dip"
+                            android:layout_toLeftOf="@id/home_ratio_img_03"
+                            android:background="@drawable/ratio_img_style" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_user_layout_ly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_date_ratio_ly" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dip"
+                    android:orientation="horizontal" >
+
+                    <ImageButton
+                        android:id="@+id/home_bn_regist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="51dip"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:layout_weight="1"
+                        android:background="@drawable/home_regist_bn_style" />
+
+                    <ImageButton
+                        android:id="@+id/home_bn_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="51dip"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5dip"
+                        android:layout_weight="1"
+                        android:background="@drawable/home_user_login_bn_style" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_user_layout_ly" >
+
+                <include layout="@layout/home_select_list_layout" />
+            </LinearLayout>
+        </RelativeLayout>
+    </com.nd.ql.assist_class.MyScrollView>
+
+</RelativeLayout>

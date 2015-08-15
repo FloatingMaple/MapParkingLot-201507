@@ -1,0 +1,132 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7" >
+
+        <android.support.v4.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true" >
+
+            <FrameLayout
+                android:id="@+id/content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+            </FrameLayout>
+        </android.support.v4.widget.DrawerLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#F0F0F0" >
+
+        <RelativeLayout
+            android:id="@+id/layout_map"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/iv_map"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="2"
+                    android:src="@drawable/iv_tag_map" />
+
+                <TextView
+                    android:id="@+id/tv_map"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="地图"
+                    android:textColor="#11401C"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_order"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/iv_order"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="2"
+                    android:src="@drawable/iv_tag_order" />
+
+                <TextView
+                    android:id="@+id/tv_order"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="订单"
+                    android:textColor="#11401C"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_myself"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/iv_myself"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/iv_tag_myself" />
+
+                <TextView
+                    android:id="@+id/tv_myself"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="我的"
+                    android:textColor="#11401C"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainRLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.nd.ql.assist_class.MyScrollLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ScrollLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/parking1" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/parking2" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/parking3" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:text="完美停车，从这开始！"
+                android:textColor="#CB2900"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/parking4" >
+
+            <Button
+                android:id="@+id/startBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="98dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/button_bg"
+                android:text="开始我的Happy生活"
+                android:textColor="@color/TextColor"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </com.nd.ql.assist_class.MyScrollLayout>
+
+    <LinearLayout
+        android:id="@+id/llayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24.0dip"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:padding="5.0dip"
+            android:src="@drawable/page_indicator_bg" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:padding="5.0dip"
+            android:src="@drawable/page_indicator_bg" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:padding="5.0dip"
+            android:src="@drawable/page_indicator_bg" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:padding="5.0dip"
+            android:src="@drawable/page_indicator_bg" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/animLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/leftLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/whatsnew_left" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/whatsnew_left_m" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rightLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/whatsnew_right_m" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/whatsnew_right" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
