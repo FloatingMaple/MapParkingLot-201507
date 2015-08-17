@@ -19,6 +19,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.location.Geocoder;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -70,7 +71,9 @@ import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.DrivingRouteLine.DrivingStep;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption.DrivingPolicy;
+import com.baidu.mapapi.search.route.DrivingRouteLine;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
@@ -108,7 +111,11 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
     private RoutePlanSearch mSearch;// 路径规划搜索接口
     private int drivintResultIndex = 0;	//驾车路线方案index
     private int totalLine = 0;		//总路线数量
-    
+    private RelativeLayout rl_show_detail_routeinfo;
+    private RelativeLayout rl_clear_navi;
+    private ImageButton ib_show_detail;
+    private ImageButton ib_clear_navi;
+    private String detailStepInfo = "";
 	protected static final String Tag = "MyTag";
 	View mView;
 
@@ -122,6 +129,15 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 				false);
 		
 		mMapView = (MapView) mapLayout.findViewById(R.id.bmapview);
+		
+		rl_show_detail_routeinfo = 
+				(RelativeLayout) mapLayout.findViewById(R.id.rl_show_detail_routeinfo);
+		rl_clear_navi = 
+				(RelativeLayout) mapLayout.findViewById(R.id.rl_clear_navi);
+		ib_show_detail =
+				(ImageButton) mapLayout.findViewById(R.id.ib_show_detail);
+		ib_clear_navi = 
+				(ImageButton) mapLayout.findViewById(R.id.ib_clear_navi);
 		
 		initview();
 		//实现定位
@@ -138,6 +154,12 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 			@Override
 			public boolean onMarkerClick(Marker marker) {
 				Bundle extraInfo = marker.getExtraInfo();
+				if(marker.getExtraInfo() == null){
+					return true;
+				}else if((MapDataInfo) extraInfo.getSerializable("info") == null){
+					return true;
+				}else{
+				//判断是否是路径规划的始终点、中间节点
 				MapDataInfo info = (MapDataInfo) extraInfo.getSerializable("info");
 				TextView distance = (TextView) mMarkerLy.findViewById(R.id.tv_info_distance);
 				TextView price = (TextView) mMarkerLy.findViewById(R.id.tv_info_price);
@@ -177,6 +199,7 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 				mMarkerLy.setVisibility(View.VISIBLE);
 				
 				return true;
+				}
 			}
 		});
 		
@@ -205,9 +228,33 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 			}
 		});
 				
+		ib_clear_navi.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				baiduMap.clear();
+				detailStepInfo = "";
+				initMarker();
+			}
+		});
+		
+		ib_show_detail.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent();
+				intent.setClassName(getActivity(), "com.nd.ql.activity.MapRouteDetailActivity");
+				Bundle bundle = new Bundle();
+				bundle.putString("detailinfo",detailStepInfo);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
+		
 		
 		return mapLayout;
 	}
+	
 	
 	private void navigation_click(LatLng stLatLng,LatLng enLatLng){
 
@@ -249,7 +296,6 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 		baiduMap.setTrafficEnabled(true);
 		MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(15.0f);
 		baiduMap.setMapStatus(msu);
-		
 		mSearch = RoutePlanSearch.newInstance();
 	}
 
@@ -375,7 +421,7 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 	
 	@Override
 	public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-		//baiduMap.clear();
+		baiduMap.clear();
 		if(drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR){
 			Log.i("resultError", "drivingrouteresulterror:"+drivingRouteResult.error);
 			Toast.makeText(getActivity().getApplicationContext(), "抱歉，未找到结果！", Toast.LENGTH_SHORT).show();
@@ -391,9 +437,30 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 			drivingRouteOverlay.addToMap();
 			drivingRouteOverlay.zoomToSpan();
 			totalLine = drivingRouteResult.getRouteLines().size();
-			Log.i("result size", "result size :　" + totalLine);
+			Log.i("MapApi", "result size :　" + totalLine);
+			
+			//激活clear_navi、show_detail按钮
+			rl_clear_navi.setVisibility(View.VISIBLE);
+			rl_show_detail_routeinfo.setVisibility(View.VISIBLE);
+			
+			//获取详细路径信息
+			List<DrivingRouteLine> routeLines = drivingRouteResult.getRouteLines();
+			List<DrivingStep> steps = routeLines.get(0).getAllStep();
+			int totaldistance = 0;
+			String temp = "";
+			for(int i=0;i<steps.size();i++){
+				String instruction = steps.get(i).getInstructions();
+				int distance = steps.get(i).getDistance();
+				totaldistance += distance;
+				temp = "Step " + (i+1) + " : \n"
+						+ instruction + " \n" + "路程: "+ distance +"米\n\n";
+				detailStepInfo += temp;
+				Log.i("MapApi", "steps:"+instruction+" 路程:"+distance+"米");
+			}	
 			if(drivingRouteResult.getTaxiInfo() != null){
 				Toast.makeText(getActivity().getApplicationContext(), "总路程:" + drivingRouteResult.getTaxiInfo().getDistance(), 1000).show();
+			}else{
+				Toast.makeText(getActivity().getApplicationContext(), "总路程:" + totaldistance, 1000).show();
 			}
 		}
 	}

@@ -11,6 +11,82 @@
     />
 	
 	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+    	android:layout_alignParentTop="true"
+    	android:paddingTop="2dp"
+    	android:background="#e0969696"
+	    android:paddingBottom="2dp"
+	    >
+	    
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:orientation="horizontal"
+	        >
+	        
+	        <EditText 
+	            android:layout_marginLeft="10dp"
+	            android:id="@+id/et_search_area"
+	            android:hint="请输入要去的地方"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="4"
+	            />
+	        
+	        <Button 
+	        	android:layout_marginRight="10dp"
+	            android:id="@+id/bt_search_submit"
+	            android:text="搜索"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            />
+	    </LinearLayout>
+	    
+	    
+	</RelativeLayout>
+	
+	<RelativeLayout 
+	    android:id="@+id/rl_show_detail_routeinfo"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_marginTop="80dp"
+		android:visibility="gone"
+	    >
+	    
+		<ImageButton 
+		    android:id="@+id/ib_show_detail"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:src="@drawable/map_icon_detail"
+		    android:clickable="true"
+		    />
+	    
+	</RelativeLayout>
+	
+	<RelativeLayout 
+	    android:id="@+id/rl_clear_navi"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_marginTop="120dp"
+		android:visibility="gone"
+	    >
+	    
+	    <ImageButton 
+		    android:id="@+id/ib_clear_navi"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:src="@drawable/map_icon_clear"
+			android:clickable="true"
+		/>
+	    		
+	</RelativeLayout>
+	
+	<RelativeLayout 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_marginBottom="50dp"
