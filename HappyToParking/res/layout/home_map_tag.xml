@@ -13,8 +13,8 @@
 	<RelativeLayout 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="5dp"
-	    android:layout_marginLeft="50dp"
+	    android:layout_marginBottom="50dp"
+	    android:layout_marginLeft="10dp"
 	    android:layout_alignParentBottom="true"
 	    >
 	    
@@ -27,4 +27,105 @@
 	    
 	</RelativeLayout>
 
+	<RelativeLayout 
+	    android:visibility="gone"
+	    android:id="@+id/rl_maker_ly"
+	    android:clickable="true"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true">
+	    
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="#cc4e5a6b"
+		    android:orientation="vertical" 
+		    android:paddingTop="5dp"
+		    android:paddingBottom="5dp">
+			
+		    <LinearLayout 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        android:layout_marginLeft="20dp"
+		        android:layout_marginRight="20dp"
+		        android:paddingBottom="2dp"
+		        >
+		        <RelativeLayout 
+		            android:layout_width="fill_parent"
+		            android:layout_height="fill_parent"
+		            >
+		            
+			        <TextView 
+			            android:id="@+id/tv_info_name"
+			            android:layout_centerInParent="true"
+			         	android:layout_alignParentLeft="true"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="停车场名"
+			            android:textColor="#fff5eb"
+			            />
+			        
+				    <TextView 
+				        android:id="@+id/tv_navi_click"
+				    	android:layout_centerInParent="true"
+				    	    android:layout_alignParentRight="true"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:text="|进入导航|"
+				            android:clickable="true"
+				            android:textColor="#fff5eb"
+				            android:layout_marginRight="20dp"
+				     />
+			    	</RelativeLayout>
+		    </LinearLayout>
+		    
+		    <LinearLayout 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        android:layout_marginLeft="20dp"
+		        android:layout_marginRight="20dp"
+		        android:paddingBottom="2dp"
+		        >
+		           
+			        <TextView 
+			            android:id="@+id/tv_info_distance"
+			            android:layout_weight="1"
+			            android:layout_centerInParent="true"
+			         	android:layout_alignParentLeft="true"
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:text="距离XX米"
+			            android:textColor="#fff5eb"
+			            />
+			        
+			        <TextView 
+			            android:id="@+id/tv_info_price"			            
+			            android:layout_weight="2"
+			            android:layout_centerInParent="true"
+			         	android:layout_alignParentLeft="true"
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:text="停车价格XX元/小时"
+			            android:textColor="#fff5eb"
+			            />
+			        	        
+			        <TextView 
+			            android:id="@+id/tv_info_lastnum"
+			            android:layout_weight="1.5"
+			            android:layout_centerInParent="true"
+			         	android:layout_alignParentLeft="true"
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:text="剩余车位XX个"
+			            android:textColor="#fff5eb"
+			            />
+			        
+		    </LinearLayout>
+	
+	</LinearLayout>
+</RelativeLayout>
+	
+	
 </RelativeLayout>
