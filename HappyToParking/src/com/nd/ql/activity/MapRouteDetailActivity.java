@@ -38,9 +38,7 @@ public class MapRouteDetailActivity extends Activity{
 			
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent();
-				intent.setClassName(MapRouteDetailActivity.this, "com.nd.ql.activity.HomePageActivity");
-				startActivity(intent);
+				MapRouteDetailActivity.this.finish();
 			}
 		});
 		

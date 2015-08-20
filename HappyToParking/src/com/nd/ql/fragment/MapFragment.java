@@ -1,5 +1,6 @@
 package com.nd.ql.fragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -29,7 +31,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -82,6 +86,7 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.navisdk.ui.routeguide.subview.r;
+import com.nd.ql.activity.MapDetailInfoListActivity;
 import com.nd.ql.bdmap.MapDataInfo;
 import com.nd.ql.bdmap.MyOrientationListener;
 import com.nd.ql.bdmap.MyOrientationListener.OnOrientationListener;
@@ -113,9 +118,15 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
     private int totalLine = 0;		//总路线数量
     private RelativeLayout rl_show_detail_routeinfo;
     private RelativeLayout rl_clear_navi;
+    private RelativeLayout rl_show_in_list;
     private ImageButton ib_show_detail;
     private ImageButton ib_clear_navi;
+    private ImageButton ib_show_in_list;
+    private EditText et_search_area;
+    private Button bt_search_submit;
     private String detailStepInfo = "";
+    private String searchAddress = "";		//要查找的地址
+
 	protected static final String Tag = "MyTag";
 	View mView;
 
@@ -123,7 +134,6 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 			Bundle savedInstancemap) {
 		SDKInitializer.initialize(getActivity().getApplicationContext());
 		super.onCreateView(inflater, container, savedInstancemap);
-		
 		
 		View mapLayout = inflater.inflate(R.layout.home_map_tag, container,
 				false);
@@ -134,17 +144,46 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 				(RelativeLayout) mapLayout.findViewById(R.id.rl_show_detail_routeinfo);
 		rl_clear_navi = 
 				(RelativeLayout) mapLayout.findViewById(R.id.rl_clear_navi);
+		rl_show_in_list = 
+				(RelativeLayout) mapLayout.findViewById(R.id.rl_show_in_list);
 		ib_show_detail =
 				(ImageButton) mapLayout.findViewById(R.id.ib_show_detail);
 		ib_clear_navi = 
 				(ImageButton) mapLayout.findViewById(R.id.ib_clear_navi);
+		ib_show_in_list = 
+				(ImageButton) mapLayout.findViewById(R.id.ib_show_in_list);
+		et_search_area = 
+				(EditText) mapLayout.findViewById(R.id.et_search_area);
+		bt_search_submit = 
+				(Button) mapLayout.findViewById(R.id.bt_search_submit);
+		
+		//输入地名进行模糊查找的查找按钮点击事件
+		bt_search_submit.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				baiduMap.clear();
+				//获取地址
+				searchAddress = et_search_area.getText().toString().trim();
+				mMarker = BitmapDescriptorFactory.fromResource(R.drawable.maker);			
+				addOverlays(MapDataInfo.infos2);
+				
+				//清除搜索框内容
+				et_search_area.setText("");
+				//取消显示键盘
+				et_search_area.setFocusable(false);
+				InputMethodManager inputMethodManager = (InputMethodManager) 
+						getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+			}
+		});
 		
 		initview();
 		//实现定位
 		initlocation();
 		
 		initMarker();
-		
+			
 		mMarkerLy = (RelativeLayout) mapLayout.findViewById(R.id.rl_maker_ly);
 
 		
@@ -227,17 +266,21 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 				navigation_click(stLatLng,enLatLng);
 			}
 		});
-				
+	
 		ib_clear_navi.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View view) {
 				baiduMap.clear();
 				detailStepInfo = "";
+				
+				//清除路径规划后取消按钮的显示
+				rl_clear_navi.setVisibility(View.GONE);
+				rl_show_detail_routeinfo.setVisibility(View.GONE);
 				initMarker();
 			}
 		});
-		
+
 		ib_show_detail.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -250,12 +293,36 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 				startActivity(intent);
 			}
 		});
-		
+
+		ib_show_in_list.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent();
+				intent.setClassName(getActivity(), "com.nd.ql.activity.MapDetailInfoListActivity");
+				Bundle bundle = new Bundle();		
+				bundle.putSerializable("info", (Serializable) MapDataInfo.infos);
+				intent.putExtras(bundle);
+				startActivity(intent);		
+			}
+		});
 		
 		return mapLayout;
 	}
 	
 	
+	/**
+	 * 对选择的停车场的路径规划
+	 * @param chooselatlng
+	 */
+	private void choose_to_navi(double[] chooselatlng) {
+		baiduMap.clear();
+		LatLng startLatlng = new LatLng(mLatitude, mLongitude);
+		LatLng chooseLatlng = new LatLng(chooselatlng[0], chooselatlng[1]);
+		navigation_click(startLatlng, chooseLatlng);
+	}
+
+
 	private void navigation_click(LatLng stLatLng,LatLng enLatLng){
 
 		mSearch.setOnGetRoutePlanResultListener(this);
@@ -288,7 +355,6 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 		MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
 		baiduMap.setMapStatus(msu);
 	}
-
 
 	private void initview() {
 		baiduMap = mMapView.getMap();
@@ -343,6 +409,7 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 	//定位到我的位置
 	private void local_to_mLocation(){
 		LatLng latLng = new LatLng(mLatitude, mLongitude);
+		Log.i("定位到我的位置", mLatitude + "  " + mLongitude);
 		MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
 		baiduMap.animateMapStatus(msu);
 	}
@@ -366,6 +433,7 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 			//更新位置
 			mLatitude = location.getLatitude();
 			mLongitude = location.getLongitude();
+			Log.i("更新位置", mLatitude + "  " + mLongitude);
 			
 			//把定位所得的位置存储到LOCATION
 			LOCATION = Double.toString(mLongitude) + "," + Double.toString(mLatitude);
@@ -380,7 +448,21 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 				
 				Toast.makeText(getActivity().getApplicationContext(), location.getAddrStr(),Toast.LENGTH_SHORT).show();
 			}
-		}	
+			
+			//从列表中点击的事件
+			if (MapDetailInfoListActivity.chooselatlng != null) {
+				LatLng stLatLng = new LatLng(mLatitude,mLongitude);
+				LatLng enLatLng = new LatLng(MapDetailInfoListActivity.chooselatlng[1]
+						, MapDetailInfoListActivity.chooselatlng[0]);
+				Log.i("列表点击事件5", String.valueOf(mLatitude) + "  " + mLongitude);
+				Log.i("列表点击事件6", MapDetailInfoListActivity.chooselatlng[0] + "  " + 
+						MapDetailInfoListActivity.chooselatlng[1]);
+				navigation_click(stLatLng, enLatLng);
+				MapDetailInfoListActivity.chooselatlng = null;
+			}
+			
+		}
+			
 	}
 	
 	@Override
@@ -416,12 +498,11 @@ public class MapFragment extends Fragment implements OnGetRoutePlanResultListene
 		super.onStop();
 		myOrientationListener.stop();
 	}
-
-	
 	
 	@Override
 	public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
 		baiduMap.clear();
+		detailStepInfo = "";
 		if(drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR){
 			Log.i("resultError", "drivingrouteresulterror:"+drivingRouteResult.error);
 			Toast.makeText(getActivity().getApplicationContext(), "抱歉，未找到结果！", Toast.LENGTH_SHORT).show();

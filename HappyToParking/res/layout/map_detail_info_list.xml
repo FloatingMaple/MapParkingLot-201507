@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_marginTop="3dp"
+    >
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        
+	    <TextView 
+	        android:id="@+id/tv_map_detail_info_list_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="测试名字"
+	        android:layout_centerVertical="true"
+	        android:textSize="20dp"
+	        />
+	    
+	    <TextView 
+           android:id="@+id/tv_map_detail_info_list_distance"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+		   android:text="XXX米"
+		   android:textSize="18dp"
+		   android:layout_marginLeft="30dp"
+		   android:layout_toRightOf="@id/tv_map_detail_info_list_name"
+		   android:layout_centerVertical="true"
+           />
+	    
+	    <Button 
+	        android:layout_alignParentRight="true"
+	        android:id="@+id/bt_map_detail_info_list_navi"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="查看路线"
+	        />
+	    	
+    </RelativeLayout>
+    
+    <TextView 
+        android:id="@+id/tv_map_detail_info_list_address"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="测试地址测试地址测试地址测试地址测试地址"
+	    android:textSize="15dp"        
+        />
+    	    
+	<LinearLayout 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:orientation="horizontal"
+	       >
+		    
+	       <TextView 
+	           android:id="@+id/tv_map_detail_info_list_price"
+	           android:layout_width="0dp"
+	           android:layout_height="wrap_content"
+			   android:layout_weight="1"
+			   android:layout_marginLeft="20dp"
+			   android:text="价格 X.X元/小时"
+	           />
+	       
+	       <TextView 
+	           android:id="@+id/tv_map_detail_info_list_lastnum"
+	           android:layout_width="0dp"
+	           android:layout_height="wrap_content"
+			   android:layout_weight="1"
+			   android:text="剩余车位 XX个"
+	           android:layout_marginLeft="10dp"
+	           />
+	       
+	 </LinearLayout>
+
+</LinearLayout>

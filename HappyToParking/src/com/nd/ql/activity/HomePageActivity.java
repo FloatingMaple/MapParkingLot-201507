@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,7 +67,7 @@ public class HomePageActivity extends Activity implements OnClickListener {
 		user_id = intent.getStringExtra("user_id");
 		setContentView(R.layout.home_main);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		initViews(); // 初始化界面，并设置四个tab的监听
+		initViews(); // 初始化界面，并设置四个tab的监听		
 		fragmentManager = getFragmentManager();
 		setTabSelection(0); // 第一次启动时开启第0个tab
 	}

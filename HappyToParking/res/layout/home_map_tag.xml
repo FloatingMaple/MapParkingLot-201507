@@ -87,6 +87,23 @@
 	</RelativeLayout>
 	
 	<RelativeLayout 
+	    android:id="@+id/rl_show_in_list"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="160dp"
+	    android:layout_alignParentRight="true"
+	    >
+	    
+	    <ImageButton
+	        android:id="@+id/ib_show_in_list"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/map_icon_show_in_list"
+	        />
+	    
+	</RelativeLayout>
+	
+	<RelativeLayout 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_marginBottom="50dp"

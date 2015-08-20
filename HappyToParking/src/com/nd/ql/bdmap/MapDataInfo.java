@@ -25,7 +25,17 @@ public class MapDataInfo implements Serializable{
 	static{
 		infos.add(new MapDataInfo(119.218677, 26.03178, "测试6", "475", "福建省福州市闽侯县致广南路", 4.8,20));
 		infos.add(new MapDataInfo(119.225504, 26.026585000000001, "测试5", "523", "福建省福州市闽侯县旗山大道", 10,40));
-		infos.add(new MapDataInfo(119.227804,26.022978,  "测试1", "0", "", 8.8, 3));
+		infos.add(new MapDataInfo(119.227804, 26.022978,  "测试1", "0", "", 8.8, 3));
+		infos.add(new MapDataInfo(119.280229, 26.056106 , "超远距离测试", "0", "", 12, 100));
+	}
+	
+	public static List<MapDataInfo> infos2 = new ArrayList<MapDataInfo>();
+	
+	static{
+		infos2.add(new MapDataInfo(119.218377, 26.03178, "搜索测试1", "475", "", 4.8,20));
+		infos2.add(new MapDataInfo(119.225004, 26.026585, "搜索测试2", "523", "", 10,40));
+		infos2.add(new MapDataInfo(119.227104, 26.022978,  "搜索测试3", "0", "", 8.8, 3));
+		infos2.add(new MapDataInfo(119.280229, 26.050106 , "搜索测试4", "0", "", 12, 100));
 	}
 	
 	public MapDataInfo(double latitude, double longitude, String name,
